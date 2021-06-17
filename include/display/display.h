@@ -105,6 +105,11 @@ typedef struct ctrl_btn_ext_t
     lv_obj_t *pad;
 } ctrl_btn_ext_t;
 
+typedef struct btnm_ext_t_struct
+{
+    int8_t last_active;
+} btnm_ext_t;
+
 class Display
 {
     lv_disp_draw_buf_t disp_buf;
