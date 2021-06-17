@@ -22,7 +22,7 @@ void setup()
 {
 	Serial.begin(115200);
 	// while(!Serial && millis() < 2000);
-	// while(!Serial);
+	while(!Serial);
 		
 	updateTimer.priority(255);
 	updateTimer.begin(update, 1000);

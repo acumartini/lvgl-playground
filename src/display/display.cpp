@@ -233,6 +233,9 @@ PROGMEM_DISPLAY void Display::render()
     btnm_ext_t *btnm_ext = (btnm_ext_t *)malloc(sizeof(btnm_ext_t));
     btnm_ext->last_active = -1; // init to empty patch
     lv_obj_set_user_data(btnm, btnm_ext);
+    lv_btnmatrix_set_selected_btn(btnm, 0);
+    
+    Serial.println(lv_btnmatrix_get_selected_btn(btnm)); // SANITY CHECK
 
     lv_scr_load(pg);
     Serial.println("complete!");
