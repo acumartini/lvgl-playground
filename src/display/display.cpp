@@ -23,6 +23,7 @@ lv_style_t btnm_style;
 lv_style_t btnm_btn_style;
 
 const char *btnm_map_20[] PROGMEM_DISPLAY_BTNM = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "\n", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", ""};
+int last_id = -1;
 
 }
 
@@ -140,26 +141,26 @@ void btnm_cb(struct _lv_event_t *event)
     uint16_t id = lv_btnmatrix_get_selected_btn(event->current_target);
     Serial.println(id);
 
-    btnm_ext_t *btnm_ext = (btnm_ext_t *)lv_obj_get_user_data(event->current_target);
-    Serial.println(btnm_ext->last_active);
+    // btnm_ext_t *btnm_ext = (btnm_ext_t *)lv_obj_get_user_data(event->current_target);
+    // Serial.println(btnm_ext->last_active);
     
     // uint8_t text = (uint8_t)atoi(lv_btnmatrix_get_btn_text(event->current_target, id));
     // Serial.println(text);
 
     if (event->code == LV_EVENT_VALUE_CHANGED) {
-        if (id == btnm_ext->last_active) { // disconnect
+        if (id == last_id) { // disconnect
             Serial.println("DISCONNECT");
         } else { // connect
             Serial.println("CONNECT");
         }
     }
     if (event->code == LV_EVENT_RELEASED || event->code == LV_EVENT_PRESS_LOST) {
-        if (id == btnm_ext->last_active) { // uncheck
+        if (id == last_id) { // uncheck
             Serial.println("UNCKECK");
             lv_btnmatrix_clear_btn_ctrl(event->current_target, id, LV_BTNMATRIX_CTRL_CHECKED);
-            btnm_ext->last_active = -1;
+            last_id = -1;
         } else {
-            btnm_ext->last_active = id;
+            last_id = id;
             Serial.print("SET LAST ACTIVE: ");
             Serial.println(id);
         }
@@ -230,9 +231,9 @@ PROGMEM_DISPLAY void Display::render()
     lv_obj_add_event_cb(btnm, btnm_cb, LV_EVENT_VALUE_CHANGED, NULL);
     lv_obj_add_event_cb(btnm, btnm_cb, LV_EVENT_RELEASED, NULL);
     lv_obj_add_event_cb(btnm, btnm_cb, LV_EVENT_PRESS_LOST, NULL);
-    btnm_ext_t *btnm_ext = (btnm_ext_t *)malloc(sizeof(btnm_ext_t));
-    btnm_ext->last_active = -1; // init to empty patch
-    lv_obj_set_user_data(btnm, btnm_ext);
+    // btnm_ext_t *btnm_ext = (btnm_ext_t *)malloc(sizeof(btnm_ext_t));
+    // btnm_ext->last_active = -1; // init to empty patch
+    // lv_obj_set_user_data(btnm, btnm_ext);
     lv_btnmatrix_set_selected_btn(btnm, 0);
     
     Serial.println(lv_btnmatrix_get_selected_btn(btnm)); // SANITY CHECK
