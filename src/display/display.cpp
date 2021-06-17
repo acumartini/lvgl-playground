@@ -139,7 +139,7 @@ void ctrl_btn_event_cb(lv_event_t *event)
 void btnm_cb(struct _lv_event_t *event)
 {
     uint16_t id = lv_btnmatrix_get_selected_btn(event->current_target);
-    Serial.println(id);
+    // Serial.println(id);
 
     // btnm_ext_t *btnm_ext = (btnm_ext_t *)lv_obj_get_user_data(event->current_target);
     // Serial.println(btnm_ext->last_active);
@@ -150,13 +150,16 @@ void btnm_cb(struct _lv_event_t *event)
     if (event->code == LV_EVENT_VALUE_CHANGED) {
         if (id == last_id) { // disconnect
             Serial.println("DISCONNECT");
+            Serial.println(id);
         } else { // connect
             Serial.println("CONNECT");
+            Serial.println(id);
         }
     }
     if (event->code == LV_EVENT_RELEASED || event->code == LV_EVENT_PRESS_LOST) {
         if (id == last_id) { // uncheck
             Serial.println("UNCKECK");
+            Serial.println(id);
             lv_btnmatrix_clear_btn_ctrl(event->current_target, id, LV_BTNMATRIX_CTRL_CHECKED);
             last_id = -1;
         } else {
